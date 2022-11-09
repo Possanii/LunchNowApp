@@ -8,13 +8,13 @@ class LunchnowTextFormField extends StatelessWidget {
   final bool obscureText;
   final ValueNotifier<bool> _obscureTextVN;
 
-  LunchnowTextFormField(
-      {Key? key,
-      required this.label,
-      this.obscureText = false,
-      this.controller,
-      this.validator})
-      : _obscureTextVN = ValueNotifier<bool>(obscureText),
+  LunchnowTextFormField({
+    Key? key,
+    required this.label,
+    this.obscureText = false,
+    this.controller,
+    this.validator,
+  })  : _obscureTextVN = ValueNotifier<bool>(obscureText),
         super(key: key);
 
   @override

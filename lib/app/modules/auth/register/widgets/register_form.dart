@@ -12,11 +12,19 @@ class _RegisterForm extends StatelessWidget {
           children: [
             LunchnowTextFormField(label: 'Login'),
             const SizedBox(
-              height: 20,
+              height: 15,
+            ),
+            LunchnowTextFormField(label: 'CPF'),
+            const SizedBox(
+              height: 15,
+            ),
+            LunchnowTextFormField(label: 'Email'),
+            const SizedBox(
+              height: 15,
             ),
             LunchnowTextFormField(label: 'Senha', obscureText: true),
             const SizedBox(
-              height: 20,
+              height: 15,
             ),
             LunchnowTextFormField(label: 'Confirmar Senha', obscureText: true),
           ],

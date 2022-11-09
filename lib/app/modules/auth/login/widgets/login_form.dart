@@ -23,7 +23,9 @@ class _LoginFormState extends State<_LoginForm> {
           ),
           LunchnowDefaultButton(
             label: 'Login',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/home');
+            },
           )
         ],
       ),
