@@ -1,8 +1,13 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
+import 'package:lunch_now/app/models/place_model.dart';
+import 'package:lunch_now/app/modules/address/widget/address_search_widget/address_search_controller.dart';
 
 part 'widget/address_item.dart';
-part 'widget/address_search_widget.dart';
+part 'widget/address_search_widget/address_search_widget.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({Key? key}) : super(key: key);
@@ -28,7 +33,7 @@ class _AddressPageState extends State<AddressPage> {
             children: [
               Text(
                 'Adicione ou escolha um endereço',
-                style: context.textTheme.headline4?.copyWith(
+                style: context.textTheme.headlineMedium?.copyWith(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
                 ),
@@ -36,14 +41,8 @@ class _AddressPageState extends State<AddressPage> {
               const SizedBox(
                 height: 20,
               ),
-              Material(
-                elevation: 10,
-                borderRadius: BorderRadius.circular(20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20))),
-                ),
+              _AddressSearchWidget(
+                addressSelectedCallback: (place) {},
               ),
               const SizedBox(
                 height: 20,
