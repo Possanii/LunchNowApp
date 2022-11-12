@@ -1,9 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.lunch_now">
    <application
-        android:label="lunch_now"
+        android:label="Lunch Now"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_api_key"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

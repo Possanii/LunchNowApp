@@ -9,5 +9,6 @@
         "screenutil",
         "typeahead",
         "webservice"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "disabled"
 }

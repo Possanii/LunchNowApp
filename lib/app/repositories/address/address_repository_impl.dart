@@ -1,4 +1,4 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_config/flutter_config.dart';
 import 'package:google_place/google_place.dart';
 import 'package:lunch_now/app/models/place_model.dart';
 
@@ -8,7 +8,7 @@ class AddressRepositoryImpl implements AddressRepository {
   @override
   Future<List<PlaceModel>> findAddressByGooglePlaces(
       String addressPattern) async {
-    final googleApiKey = dotenv.env['google_api_key'];
+    final googleApiKey = FlutterConfig.get('google_api_key');
 
     if (googleApiKey == null) {
       throw Exception('Google API Key Not Found');
@@ -22,8 +22,6 @@ class AddressRepositoryImpl implements AddressRepository {
       return candidates.map<PlaceModel>((searchResult) {
         final location = searchResult.geometry?.location;
         final address = searchResult.formattedAddress;
-
-        print(address);
 
         return PlaceModel(
           address: address ?? '',
