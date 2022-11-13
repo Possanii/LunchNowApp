@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:lunch_now/app/core/database/sqlite_connection_factory.dart';
+import 'package:lunch_now/app/core/life_cycle/page_life_cycle_state.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/models/place_model.dart';
+import 'package:lunch_now/app/modules/address/address_controller.dart';
 import 'package:lunch_now/app/modules/address/widget/address_search_widget/address_search_controller.dart';
 
-part 'widget/address_item.dart';
 part 'widget/address_search_widget/address_search_widget.dart';
 
 class AddressPage extends StatefulWidget {
@@ -16,9 +19,11 @@ class AddressPage extends StatefulWidget {
   State<AddressPage> createState() => _AddressPageState();
 }
 
-class _AddressPageState extends State<AddressPage> {
+class _AddressPageState
+    extends PageLifeCycleState<AddressController, AddressPage> {
   @override
   Widget build(BuildContext context) {
+    Modular.get<SqliteConnectionFactory>().openConnection();
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: context.primaryColorDark),
@@ -69,10 +74,14 @@ class _AddressPageState extends State<AddressPage> {
               const SizedBox(
                 height: 20,
               ),
-              Column(
-                children: const [
-                  _AddressItem(),
-                ],
+              Observer(
+                builder: (_) {
+                  return Column(
+                    children: controller.addresses
+                        .map((a) => _ItemTile(address: a.address))
+                        .toList(),
+                  );
+                },
               )
             ],
           ),
