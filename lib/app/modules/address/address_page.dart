@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:lunch_now/app/core/database/sqlite_connection_factory.dart';
 import 'package:lunch_now/app/core/life_cycle/page_life_cycle_state.dart';
+import 'package:lunch_now/app/core/mixins/location_mixin.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/models/place_model.dart';
 import 'package:lunch_now/app/modules/address/address_controller.dart';
 import 'package:lunch_now/app/modules/address/widget/address_search_widget/address_search_controller.dart';
+import 'package:mobx/mobx.dart';
 
 part 'widget/address_search_widget/address_search_widget.dart';
 
@@ -20,7 +23,43 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState
-    extends PageLifeCycleState<AddressController, AddressPage> {
+    extends PageLifeCycleState<AddressController, AddressPage>
+    with LocationMixin {
+  final reactionDisposers = <ReactionDisposer>[];
+
+  @override
+  void initState() {
+    super.initState();
+    final reactionService =
+        reaction<Observable<bool>>((_) => controller.locationServiceUnavailable,
+            (locationServiceUnavailable) {
+      if (locationServiceUnavailable.value) {
+        showDialogLocationServiceUnavailable();
+      }
+    });
+    final reactionLocationPermission =
+        reaction<Observable<LocationPermission>?>(
+            (_) => controller.locationPermission, (locationPermission) {
+      if (locationPermission != null &&
+          locationPermission.value == LocationPermission.denied) {
+        showDialogLocationDenied(tryAgain: () => controller.myLocation());
+      } else if (locationPermission != null &&
+          locationPermission.value == LocationPermission.deniedForever) {
+        showDialogLocationDeniedForever();
+      }
+    });
+
+    reactionDisposers.addAll([reactionService, reactionLocationPermission]);
+  }
+
+  @override
+  void dispose() {
+    for (var reaction in reactionDisposers) {
+      reaction();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     Modular.get<SqliteConnectionFactory>().openConnection();
@@ -48,14 +87,15 @@ class _AddressPageState
               ),
               _AddressSearchWidget(
                 addressSelectedCallback: (place) {
-                  Modular.to.pushNamed('/address/detail/', arguments: place);
+                  controller.goToAddressDetail(place);
                 },
               ),
               const SizedBox(
                 height: 20,
               ),
-              const ListTile(
-                leading: CircleAvatar(
+              ListTile(
+                onTap: () => controller.myLocation(),
+                leading: const CircleAvatar(
                   backgroundColor: Colors.red,
                   radius: 30,
                   child: Icon(
@@ -63,13 +103,13 @@ class _AddressPageState
                     color: Colors.white,
                   ),
                 ),
-                title: Text(
+                title: const Text(
                   'Localização Atual',
                   style: TextStyle(
                     fontSize: 20,
                   ),
                 ),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
               ),
               const SizedBox(
                 height: 20,
