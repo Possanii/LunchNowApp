@@ -1,9 +1,10 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:mobx/mobx.dart';
+
 import 'package:lunch_now/app/core/database/sqlite_connection_factory.dart';
 import 'package:lunch_now/app/core/life_cycle/page_life_cycle_state.dart';
 import 'package:lunch_now/app/core/mixins/location_mixin.dart';
@@ -11,8 +12,8 @@ import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/models/place_model.dart';
 import 'package:lunch_now/app/modules/address/address_controller.dart';
 import 'package:lunch_now/app/modules/address/widget/address_search_widget/address_search_controller.dart';
-import 'package:mobx/mobx.dart';
 
+part 'widget/address_item.dart';
 part 'widget/address_search_widget/address_search_widget.dart';
 
 class AddressPage extends StatefulWidget {
@@ -31,20 +32,19 @@ class _AddressPageState
   void initState() {
     super.initState();
     final reactionService =
-        reaction<Observable<bool>>((_) => controller.locationServiceUnavailable,
+        reaction<bool>((_) => controller.locationServiceUnavailable,
             (locationServiceUnavailable) {
-      if (locationServiceUnavailable.value) {
+      if (locationServiceUnavailable) {
         showDialogLocationServiceUnavailable();
       }
     });
-    final reactionLocationPermission =
-        reaction<Observable<LocationPermission>?>(
-            (_) => controller.locationPermission, (locationPermission) {
+    final reactionLocationPermission = reaction<LocationPermission?>(
+        (_) => controller.locationPermission, (locationPermission) {
       if (locationPermission != null &&
-          locationPermission.value == LocationPermission.denied) {
+          locationPermission == LocationPermission.denied) {
         showDialogLocationDenied(tryAgain: () => controller.myLocation());
       } else if (locationPermission != null &&
-          locationPermission.value == LocationPermission.deniedForever) {
+          locationPermission == LocationPermission.deniedForever) {
         showDialogLocationDeniedForever();
       }
     });
@@ -85,9 +85,15 @@ class _AddressPageState
               const SizedBox(
                 height: 20,
               ),
-              _AddressSearchWidget(
-                addressSelectedCallback: (place) {
-                  controller.goToAddressDetail(place);
+              Observer(
+                builder: (_) {
+                  return _AddressSearchWidget(
+                    key: UniqueKey(),
+                    addressSelectedCallback: (place) {
+                      controller.goToAddressDetail(place);
+                    },
+                    place: controller.placeModel,
+                  );
                 },
               ),
               const SizedBox(
@@ -118,7 +124,13 @@ class _AddressPageState
                 builder: (_) {
                   return Column(
                     children: controller.addresses
-                        .map((a) => _ItemTile(address: a.address))
+                        .map((a) => _AddressItem(
+                              address: a.address,
+                              additional: a.additional,
+                              onTap: () {
+                                controller.selectAddress(a);
+                              },
+                            ))
                         .toList(),
                   );
                 },
