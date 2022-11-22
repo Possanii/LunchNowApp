@@ -5,7 +5,6 @@ import 'package:lunch_now/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/core/ui/widgets/lunchnow_default_button.dart';
 import 'package:lunch_now/app/core/ui/widgets/lunchnow_textform_field.dart';
-import 'package:lunch_now/app/core/ui/widgets/messages.dart';
 import 'package:lunch_now/app/core/ui/widgets/rounded_button_with_icon.dart';
 import 'package:lunch_now/app/modules/auth/login/login_controller.dart';
 import 'package:validatorless/validatorless.dart';

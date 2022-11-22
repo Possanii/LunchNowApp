@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lunch_now/app/core/exceptions/failure.dart';
 import 'package:lunch_now/app/core/exceptions/user_exists_exception.dart';
 import 'package:lunch_now/app/core/exceptions/user_not_exists_exception.dart';
@@ -66,8 +65,8 @@ class UserServiceImpl implements UserService {
         }
         final accessToken = await _userRepository.login(login, password);
         await _saveAccessToken(accessToken);
-        Messages.info('Login com sucesso');
-        Modular.to.pushNamed('/home/');
+        await _getUserData();
+        Messages.info('Login realizado com sucesso');
       } else {
         throw Failure(
             message:
@@ -81,4 +80,10 @@ class UserServiceImpl implements UserService {
 
   Future<void> _saveAccessToken(String accessToken) => _localStorage
       .write<String>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
+
+  Future<void> _getUserData() async {
+    final userModel = await _userRepository.getUserLogged();
+    await _localStorage.write<String>(
+        Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toJson());
+  }
 }

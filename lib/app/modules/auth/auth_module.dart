@@ -11,8 +11,8 @@ import 'package:lunch_now/app/services/user/user_service_impl.dart';
 class AuthModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind.lazySingleton<UserRepository>(
-        (i) => UserRepositoryImpl(log: i(), restClient: i())),
+    Bind.lazySingleton<UserRepository>((i) =>
+        UserRepositoryImpl(log: i(), restClient: i(), localStorage: i())),
     Bind.lazySingleton<UserService>((i) =>
         UserServiceImpl(log: i(), userRepository: i(), localStorage: i())),
   ];

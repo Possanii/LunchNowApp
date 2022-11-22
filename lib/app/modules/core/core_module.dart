@@ -20,16 +20,12 @@ class CoreModule extends Module {
       (i) => SqliteConnectionFactory(),
       export: true,
     ),
-    Bind.lazySingleton(
-      (i) => AuthStore(),
-      export: true,
-    ),
     Bind.lazySingleton<AppLogger>(
       (i) => LoggerAppLoggerImpl(),
       export: true,
     ),
     Bind.lazySingleton<RestClient>(
-      (i) => DioRestClient(),
+      (i) => DioRestClient(localStorage: i(), log: i(), authStore: i()),
       export: true,
     ),
     Bind.lazySingleton<LocalStorage>(
@@ -38,6 +34,10 @@ class CoreModule extends Module {
     ),
     Bind.lazySingleton<LocalSecureStorage>(
       (i) => FlutterStorageLocalStorageImpl(),
+      export: true,
+    ),
+    Bind.lazySingleton(
+      (i) => AuthStore(localStorage: i()),
       export: true,
     ),
     Bind.lazySingleton<AddressService>(

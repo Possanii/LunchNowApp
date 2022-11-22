@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:lunch_now/app/core/life_cycle/page_life_cycle_state.dart';
@@ -21,7 +22,14 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(),
+      drawer: Drawer(
+        child: TextButton(
+          onPressed: () {
+            FirebaseAuth.instance.signOut();
+          },
+          child: const Text('Logout'),
+        ),
+      ),
       backgroundColor: Colors.grey[100],
       body: NestedScrollView(
         headerSliverBuilder: (context, innerBoxIsScrolled) {

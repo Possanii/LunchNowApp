@@ -1,3 +1,4 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lunch_now/app/core/exceptions/failure.dart';
 import 'package:lunch_now/app/core/exceptions/user_not_exists_exception.dart';
 import 'package:lunch_now/app/core/ui/widgets/messages.dart';
@@ -26,6 +27,7 @@ abstract class LoginControllerBase with Store {
       Loader.show();
       await _userService.login(login, password);
       Loader.hide();
+      Modular.to.navigate('/auth/');
     } on Failure catch (e) {
       final errorMessage = e.message ?? 'Erro ao realizar login';
       _log.error(errorMessage);

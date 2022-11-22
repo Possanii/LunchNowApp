@@ -1,10 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dio/dio.dart';
 import 'package:flutter_config/flutter_config.dart';
+import 'package:lunch_now/app/core/helpers/constants.dart';
+import 'package:lunch_now/app/core/local_storage/local_storage.dart';
+import 'package:lunch_now/app/core/logger/app_logger.dart';
+import 'package:lunch_now/app/core/rest_client/dio/interceptors/auth_interceptor.dart';
 
 import 'package:lunch_now/app/core/rest_client/rest_client.dart';
 import 'package:lunch_now/app/core/rest_client/rest_client_exception.dart';
 import 'package:lunch_now/app/core/rest_client/rest_client_response.dart';
+import 'package:lunch_now/app/modules/core/auth/auth_store.dart';
 
 class DioRestClient implements RestClient {
   late final Dio _dio;
@@ -17,20 +22,31 @@ class DioRestClient implements RestClient {
   );
 
   DioRestClient({
+    required LocalStorage localStorage,
+    required AppLogger log,
+    required AuthStore authStore,
     BaseOptions? baseOptions,
   }) {
     _dio = Dio(baseOptions ?? _defaultOptions);
+    _dio.interceptors.addAll([
+      AuthInterceptor(
+        localStorage: localStorage,
+        log: log,
+        authStore: authStore,
+      ),
+      LogInterceptor(requestBody: true, responseBody: true),
+    ]);
   }
 
   @override
   RestClient auth() {
-    _defaultOptions.extra['auth_required'] = true;
+    _defaultOptions.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] = true;
     return this;
   }
 
   @override
   RestClient unAuth() {
-    _defaultOptions.extra['auth_required'] = false;
+    _defaultOptions.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] = false;
     return this;
   }
 
