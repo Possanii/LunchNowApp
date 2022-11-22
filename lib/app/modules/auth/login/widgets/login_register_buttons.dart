@@ -31,7 +31,7 @@ class _LoginRegisterButtons extends StatelessWidget {
           label: 'Cadastrar-se',
           width: .42.sw,
           onTap: () {
-            Navigator.pushNamed(context, '/auth/register');
+            Navigator.pushNamed(context, '/auth/register/');
           },
         ),
       ],

@@ -1,12 +1,13 @@
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:lunch_now/app/models/place_model.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:lunch_now/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:lunch_now/app/core/ui/widgets/loader.dart';
+import 'package:lunch_now/app/core/ui/widgets/messages.dart';
 import 'package:lunch_now/app/entities/address_entity.dart';
+import 'package:lunch_now/app/models/place_model.dart';
 import 'package:lunch_now/app/services/address/address_service.dart';
 
 part 'address_controller.g.dart';
@@ -103,6 +104,17 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
 
   Future<void> selectAddress(AddressEntity addressEntity) async {
     await _addressService.selectAddress(addressEntity);
-    Modular.to.pop();
+    Modular.to.pop(addressEntity);
+  }
+
+  Future<bool> addressWasSelected() async {
+    final address = await _addressService.getAddressSelected();
+
+    if (address != null) {
+      return true;
+    } else {
+      Messages.alert("Por favor selecione ou cadastre um endereço");
+      return false;
+    }
   }
 }

@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
+        "appbar",
+        "Appbar",
+        "authuser",
         "autoincrement",
         "Becg",
         "codegen",
@@ -9,6 +12,7 @@
         "findaddress",
         "geolocator",
         "Geolocator",
+        "grey",
         "Hlhc",
         "instace",
         "interps",
@@ -20,7 +24,10 @@
         "sqlite",
         "Sqlite",
         "typeahead",
+        "validatorless",
+        "Validatorless",
         "webservice"
     ],
-    "java.configuration.updateBuildConfiguration": "disabled"
+    "java.configuration.updateBuildConfiguration": "disabled",
+    "cmake.sourceDirectory": "${workspaceFolder}/linux"
 }

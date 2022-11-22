@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "58972133285",
+    "project_id": "lunchnowapp",
+    "storage_bucket": "lunchnowapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58972133285:android:0db235822613a00f763a4c",
+        "android_client_info": {
+          "package_name": "com.example.lunch_now"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "58972133285-kbp3ek9ljkapeqkr0p14ocihpsi23u31.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lunch_now",
+            "certificate_hash": "c922209ae488975fd1c1250899fc2a5501fde90e"
+          }
+        },
+        {
+          "client_id": "58972133285-53n25c1kocdsdrgbbvn3l0bfrbm7nfas.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDeyadaHqsEKKf9PPcje6qJgRlZQIMDv3w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "58972133285-53n25c1kocdsdrgbbvn3l0bfrbm7nfas.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "58972133285-flmf86vlmi9h94ket1l9pa0epc47g0nh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.lunchNow"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

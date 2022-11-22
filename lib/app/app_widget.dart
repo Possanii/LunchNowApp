@@ -31,7 +31,7 @@ class _AppWidgetState extends State<AppWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Modular.setInitialRoute('/auth');
+    Modular.setInitialRoute('/auth/');
     Modular.setObservers([asuka.asukaHeroController]);
 
     return ScreenUtilInit(
