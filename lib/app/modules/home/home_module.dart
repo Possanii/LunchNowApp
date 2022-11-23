@@ -5,7 +5,10 @@ import 'package:lunch_now/app/modules/home/home_page.dart';
 class HomeModule extends Module {
   @override
   final List<Bind> binds = [
-    Bind.singleton((i) => HomeController(addressService: i())),
+    Bind.singleton((i) => HomeController(
+          addressService: i(),
+          supplierService: i(),
+        )),
   ];
 
   @override

@@ -27,6 +27,43 @@ mixin _$HomeController on _HomeControllerBase, Store {
     });
   }
 
+  late final _$_listCategoriesAtom =
+      Atom(name: '_HomeControllerBase._listCategories', context: context);
+
+  List<dynamic> get listCategories {
+    _$_listCategoriesAtom.reportRead();
+    return super._listCategories;
+  }
+
+  @override
+  List<dynamic> get _listCategories => listCategories;
+
+  @override
+  set _listCategories(List<dynamic> value) {
+    _$_listCategoriesAtom.reportWrite(value, super._listCategories, () {
+      super._listCategories = value;
+    });
+  }
+
+  late final _$_supplierPageTypeSelectedAtom = Atom(
+      name: '_HomeControllerBase._supplierPageTypeSelected', context: context);
+
+  SupplierPageType get supplierPageTypeSelected {
+    _$_supplierPageTypeSelectedAtom.reportRead();
+    return super._supplierPageTypeSelected;
+  }
+
+  @override
+  SupplierPageType get _supplierPageTypeSelected => supplierPageTypeSelected;
+
+  @override
+  set _supplierPageTypeSelected(SupplierPageType value) {
+    _$_supplierPageTypeSelectedAtom
+        .reportWrite(value, super._supplierPageTypeSelected, () {
+      super._supplierPageTypeSelected = value;
+    });
+  }
+
   late final _$_getAddressSelectedAsyncAction =
       AsyncAction('_HomeControllerBase._getAddressSelected', context: context);
 
@@ -42,6 +79,14 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   Future<void> goToAddressPage() {
     return _$goToAddressPageAsyncAction.run(() => super.goToAddressPage());
+  }
+
+  late final _$_getCategoriesAsyncAction =
+      AsyncAction('_HomeControllerBase._getCategories', context: context);
+
+  @override
+  Future<void> _getCategories() {
+    return _$_getCategoriesAsyncAction.run(() => super._getCategories());
   }
 
   @override

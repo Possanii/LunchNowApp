@@ -12,20 +12,6 @@ class _LoginRegisterButtons extends StatelessWidget {
       runSpacing: 10,
       children: [
         RoundedButtonWithIcon(
-          color: const Color(0xFF4267B3),
-          icon: LunchNowIcons.facebook,
-          label: 'Facebook',
-          width: .42.sw,
-          onTap: () {},
-        ),
-        RoundedButtonWithIcon(
-          color: const Color(0xFFE15031),
-          icon: LunchNowIcons.google,
-          label: 'Google',
-          width: .42.sw,
-          onTap: () {},
-        ),
-        RoundedButtonWithIcon(
           color: Colors.green,
           icon: Icons.mail,
           label: 'Cadastrar-se',

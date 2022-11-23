@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:lunch_now/app/core/ui/Icons/lunch_now_icons.dart';
 import 'package:lunch_now/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/core/ui/widgets/lunchnow_default_button.dart';

@@ -10,8 +10,12 @@ import 'package:lunch_now/app/core/rest_client/rest_client.dart';
 import 'package:lunch_now/app/modules/core/auth/auth_store.dart';
 import 'package:lunch_now/app/repositories/address/address_repository.dart';
 import 'package:lunch_now/app/repositories/address/address_repository_impl.dart';
+import 'package:lunch_now/app/repositories/supplier/supplier_repository.dart';
+import 'package:lunch_now/app/repositories/supplier/supplier_repository_impl.dart';
 import 'package:lunch_now/app/services/address/address_service.dart';
 import 'package:lunch_now/app/services/address/address_service_impl.dart';
+import 'package:lunch_now/app/services/supplier/supplier_service.dart';
+import 'package:lunch_now/app/services/supplier/supplier_service_impl.dart';
 
 class CoreModule extends Module {
   @override
@@ -48,5 +52,11 @@ class CoreModule extends Module {
       (i) => AddressRepositoryImpl(sqliteConnectionFactory: i()),
       export: true,
     ),
+    Bind.lazySingleton<SupplierRepository>(
+        (i) => SupplierRepositoryImpl(log: i(), restClient: i()),
+        export: true),
+    Bind.lazySingleton<SupplierService>(
+        (i) => SupplierServiceImpl(repository: i()),
+        export: true),
   ];
 }
