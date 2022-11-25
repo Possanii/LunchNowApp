@@ -20,11 +20,11 @@ class SupplierRepositoryImpl extends SupplierRepository {
   Future<List<SupplierNearbyMeModel>> findNearByMe(
       AddressEntity address) async {
     try {
-      final result = await _restClient.auth().get(
-        'path',
-        queryParameters: {
-          'lat': address.lat,
-          'lng': address.lng,
+      final result = await _restClient.unAuth().post(
+        '/restaurant/restaurantsbydistance',
+        data: {
+          'x': address.lat.toDouble(),
+          'y': address.lng.toDouble(),
         },
       );
       return result.data

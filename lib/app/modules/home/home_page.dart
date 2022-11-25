@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lunch_now/app/core/life_cycle/page_life_cycle_state.dart';
 import 'package:lunch_now/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/entities/address_entity.dart';
+import 'package:lunch_now/app/models/supplier_category_model.dart';
+import 'package:lunch_now/app/models/supplier_nearbyme_model.dart';
 import 'package:lunch_now/app/modules/home/home_controller.dart';
 import 'package:lunch_now/app/modules/home/widgets/home_appbar.dart';
 

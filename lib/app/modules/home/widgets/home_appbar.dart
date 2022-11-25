@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lunch_now/app/core/helpers/debouncer.dart';
 import 'package:lunch_now/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/modules/home/home_controller.dart';
@@ -9,9 +10,7 @@ class HomeAppbar extends SliverAppBar {
           expandedHeight: 100,
           collapsedHeight: 100,
           elevation: 0,
-          flexibleSpace: _LunchNowAppBar(
-            controller: controller,
-          ),
+          flexibleSpace: _LunchNowAppBar(controller),
           iconTheme: const IconThemeData(color: Colors.black),
           pinned: true,
         );
@@ -19,8 +18,9 @@ class HomeAppbar extends SliverAppBar {
 
 class _LunchNowAppBar extends StatelessWidget {
   final HomeController controller;
+  final _debouncer = Debouncer(milliseconds: 500);
 
-  const _LunchNowAppBar({required this.controller});
+  _LunchNowAppBar(this.controller);
 
   @override
   Widget build(BuildContext context) {
@@ -62,6 +62,11 @@ class _LunchNowAppBar extends StatelessWidget {
                 elevation: 4,
                 borderRadius: BorderRadius.circular(30),
                 child: TextFormField(
+                  onChanged: (value) {
+                    _debouncer.run(() {
+                      controller.filterSupplierByName(value);
+                    });
+                  },
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,

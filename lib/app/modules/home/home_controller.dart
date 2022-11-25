@@ -3,6 +3,8 @@ import 'package:lunch_now/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:lunch_now/app/core/ui/widgets/loader.dart';
 import 'package:lunch_now/app/core/ui/widgets/messages.dart';
 import 'package:lunch_now/app/entities/address_entity.dart';
+import 'package:lunch_now/app/models/supplier_category_model.dart';
+import 'package:lunch_now/app/models/supplier_nearbyme_model.dart';
 import 'package:lunch_now/app/services/address/address_service.dart';
 import 'package:lunch_now/app/services/supplier/supplier_service.dart';
 import 'package:mobx/mobx.dart';
@@ -33,19 +35,39 @@ abstract class _HomeControllerBase with Store, ControllerLifeCycle {
   @readonly
   var _supplierPageTypeSelected = SupplierPageType.list;
 
+  @readonly
+  var _listSupplierByAddress = <SupplierNearbyMeModel>[];
+
+  var _listSupplierByAddressCache = <SupplierNearbyMeModel>[];
+
+  late ReactionDisposer findSuppliersReactionDisposer;
+
+  var _nameSearchText = '';
+
+  @readonly
+  SupplierCategoryModel? _supplierCategoryFilterSelected;
+
   @override
   Future<void> onReady() async {
     try {
       Loader.show();
       await _getAddressSelected();
       await _getCategories();
-      if (_addressEntity != null) {
-        await _supplierService.findNearByMe(_addressEntity!);
-      }
-      Loader.hide();
     } finally {
       Loader.hide();
     }
+  }
+
+  @override
+  void onInit([Map<String, dynamic>? params]) {
+    findSuppliersReactionDisposer = reaction((_) => _addressEntity, (address) {
+      findSupplierByAddress();
+    });
+  }
+
+  @override
+  void dispose() {
+    findSuppliersReactionDisposer();
   }
 
   @action
@@ -68,7 +90,8 @@ abstract class _HomeControllerBase with Store, ControllerLifeCycle {
   @action
   Future<void> _getCategories() async {
     try {
-      const categories = ['Pizza', 'Lanche', 'Churrasco', 'Drinks', 'Frutas'];
+      var categories = ["Pizza", "Hamburguer", "Churrasco", "Drinks", "Frutas"]
+          .map((e) => SupplierCategoryModel(name: e));
       _listCategories = [...categories];
     } catch (e) {
       Messages.alert('Erro ao buscar categorias');
@@ -78,5 +101,52 @@ abstract class _HomeControllerBase with Store, ControllerLifeCycle {
 
   void changeTabSupplier(SupplierPageType supplierPageType) {
     _supplierPageTypeSelected = supplierPageType;
+  }
+
+  @action
+  Future<void> findSupplierByAddress() async {
+    if (_addressEntity != null) {
+      final suppliers = await _supplierService.findNearByMe(_addressEntity!);
+      _listSupplierByAddress = [...suppliers];
+      _listSupplierByAddressCache = [...suppliers];
+      filterSupplier();
+    } else {
+      Messages.alert(
+          'Para realizar a busca você precisa selecione um endereço');
+    }
+  }
+
+  @action
+  void filterSuppliersCategory(SupplierCategoryModel category) {
+    if (_supplierCategoryFilterSelected == category) {
+      _supplierCategoryFilterSelected = null;
+    } else {
+      _supplierCategoryFilterSelected = category;
+    }
+    filterSupplier();
+  }
+
+  void filterSupplierByName(String name) {
+    _nameSearchText = name;
+    filterSupplier();
+  }
+
+  @action
+  void filterSupplier() {
+    var suppliers = [..._listSupplierByAddressCache];
+    if (_supplierCategoryFilterSelected != null) {
+      suppliers = suppliers
+          .where((supplier) =>
+              supplier.type == _supplierCategoryFilterSelected?.name)
+          .toList();
+    }
+    if (_nameSearchText.isNotEmpty) {
+      suppliers = suppliers
+          .where((supplier) => supplier.name
+              .toLowerCase()
+              .contains(_nameSearchText.toLowerCase()))
+          .toList();
+    }
+    _listSupplierByAddress = [...suppliers];
   }
 }
