@@ -26,6 +26,7 @@ abstract class MealControllerBase with Store, ControllerLifeCycle {
     Loader.hide();
   }
 
+  @action
   Future<void> getMealByIdr(args) async {
     if (args != null) {
       final meals = await _mealService.getMealByIdr(args);

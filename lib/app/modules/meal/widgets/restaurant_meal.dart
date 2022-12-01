@@ -4,7 +4,9 @@ import 'package:lunch_now/app/models/meal_model.dart';
 
 // ignore: must_be_immutable
 class RestaurantMeal extends StatelessWidget {
-  MealModel? mealModel;
+  final MealModel meal;
+
+  const RestaurantMeal(this.meal);
 
   @override
   Widget build(BuildContext context) {
@@ -12,12 +14,12 @@ class RestaurantMeal extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: ListTile(
         leading: Image.network(
-          mealModel!.img,
+          meal.mealImgUrl,
           height: 60,
           width: 100,
         ),
-        title: Text(mealModel!.name),
-        subtitle: Text(mealModel!.price.toString()),
+        title: Text(meal.name),
+        subtitle: Text(meal.price.toStringAsFixed(2)),
         trailing: Padding(
           padding: const EdgeInsets.only(right: 5),
           child: Icon(

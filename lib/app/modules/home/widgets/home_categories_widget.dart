@@ -34,7 +34,7 @@ class _CategoryItem extends StatelessWidget {
     'Pizza': Icons.local_pizza,
     'Hamburguer': Icons.lunch_dining,
     'Churrasco': Icons.outdoor_grill,
-    'Drinks': Icons.local_drink,
+    'Bebidas': Icons.local_drink,
     'Frutas': Icons.apple,
   };
 

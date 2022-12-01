@@ -85,7 +85,7 @@ abstract class _HomeControllerBase with Store, ControllerLifeCycle {
   @action
   Future<void> _getCategories() async {
     try {
-      var categories = ["Pizza", "Hamburguer", "Churrasco", "Drinks", "Frutas"]
+      var categories = ["Pizza", "Hamburguer", "Churrasco", "Bebidas", "Frutas"]
           .map((e) => SupplierCategoryModel(name: e));
       _listCategories = [...categories];
     } catch (e) {

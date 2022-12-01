@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:lunch_now/app/core/ui/extensions/theme_extension.dart';
 import 'package:lunch_now/app/modules/meal/meal_controller.dart';
@@ -98,12 +99,18 @@ class _MealPageState extends State<MealPage> {
               ),
             ),
           ),
-          SliverList(
-            delegate:
-                SliverChildBuilderDelegate(childCount: 0, (context, index) {
-              return RestaurantMeal();
-            }),
-          )
+          Observer(
+            builder: (_) {
+              return SliverList(
+                delegate: SliverChildBuilderDelegate(
+                    childCount: controller.mealByRestaurant.length,
+                    (context, index) {
+                  final meal = controller.mealByRestaurant[index];
+                  return RestaurantMeal(meal);
+                }),
+              );
+            },
+          ),
         ],
       ),
     );

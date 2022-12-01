@@ -2,32 +2,40 @@ import 'dart:convert';
 
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class MealModel {
+  final String idm;
   final String name;
-  final String description;
   final double price;
-  final String img;
+  final String idr;
+  final String mealImgUrl;
+  final String desc;
   MealModel({
+    required this.idm,
     required this.name,
-    required this.description,
     required this.price,
-    required this.img,
+    required this.idr,
+    required this.mealImgUrl,
+    required this.desc,
   });
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'idm': idm,
       'name': name,
-      'description': description,
       'price': price,
-      'img': img,
+      'idr': idr,
+      'mealImgUrl': mealImgUrl,
+      'desc': desc,
     };
   }
 
   factory MealModel.fromMap(Map<String, dynamic> map) {
     return MealModel(
+      idm: map['idm'] as String,
       name: map['name'] as String,
-      description: map['description'] as String,
       price: map['price'] as double,
-      img: map['img'] as String,
+      idr: map['idr'] as String,
+      mealImgUrl: map['mealImgUrl'] as String,
+      desc: map['desc'] as String,
     );
   }
 

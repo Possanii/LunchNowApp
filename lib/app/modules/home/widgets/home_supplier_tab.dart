@@ -252,7 +252,13 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Modular.to.pushNamed('/meal/', arguments: supplier.idr);
+        Modular.to.pushNamed('/meal/', arguments: {
+          'id': supplier.idr,
+          'name': supplier.name,
+          'img': supplier.restaurantImgUrl,
+          'street': supplier.address.street,
+          'number': supplier.address.number,
+        });
       },
       child: Stack(
         children: [
@@ -276,7 +282,7 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(
-                      '${supplier.address.street} km de distância',
+                      '${supplier.distancekm.toStringAsFixed(2)} km de distância',
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],
